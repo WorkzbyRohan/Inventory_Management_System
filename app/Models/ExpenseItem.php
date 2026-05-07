@@ -7,33 +7,32 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Order extends Model implements Auditable
+class ExpenseItem extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
     use HasUuids;
 
-    /** @var string[] */
-    protected $fillable = ['merchant_id', 'sale_id', 'status', 'status_notes'];
-
     /** @var bool */
     public $incrementing = false;
+
+    /** @var string[] */
+    protected $fillable = ['expense_id', 'description', 'quantity', 'unit_price', 'line_total'];
 
     /** @var string */
     protected $keyType = 'string';
 
+    /** @var bool */
+    public $timestamps = false;
+
     /** @var string[] */
     protected $casts = [
-        'status' => 'string',
+        'quantity' => 'integer',
+        'unit_price' => 'decimal:2',
+        'line_total' => 'decimal:2',
     ];
 
-    public function merchant(): BelongsTo
+    public function expense(): BelongsTo
     {
-        return $this->belongsTo(Merchant::class);
-    }
-
-
-    public function sale(): BelongsTo
-    {
-        return $this->belongsTo(Sale::class);
+        return $this->belongsTo(Expense::class);
     }
 }

@@ -3,19 +3,18 @@
 namespace App\Models;
 
 use OwenIt\Auditing\Contracts\Auditable;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class BrandModel extends Model implements Auditable
+class City extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
     use HasUuids;
 
     /** @var string[] $fillable */
-    protected $fillable = ['merchant_id', 'brand_id', 'name'];
+    protected $fillable = ['name', 'country_id'];
 
     /** @var bool $incrementing */
     public $incrementing = false;
@@ -26,32 +25,24 @@ class BrandModel extends Model implements Auditable
     /**
      * @return BelongsTo
      */
-    public function brand(): BelongsTo
+    public function country(): BelongsTo
     {
-        return $this->belongsTo(Brand::class);
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    public function merchant(): BelongsTo
-    {
-        return $this->belongsTo(Merchant::class);
+        return $this->belongsTo(Country::class);
     }
 
     /**
      * @return HasMany
      */
-    public function variants(): HasMany
+    public function businesses(): HasMany
     {
-        return $this->hasMany(ProductVariant::class, 'brand_model_id');
+        return $this->hasMany(Business::class);
     }
 
     /**
      * @return HasMany
      */
-    public function addons(): HasMany
+    public function branches(): HasMany
     {
-        return $this->hasMany(AddOn::class, 'brand_model_id');
+        return $this->hasMany(Branch::class);
     }
 }

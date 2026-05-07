@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class MerchantSetting extends Model implements Auditable
+class BrandCategory extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
     use HasUuids;
@@ -15,14 +15,14 @@ class MerchantSetting extends Model implements Auditable
     /** @var bool $incrementing */
     public $incrementing = false;
 
-    /** @var string[] $fillable */
-    protected $fillable = [
-        'merchant_id', 'primary_color', 'secondary_color', 'warning_color', 'danger_color', 'success_color',
-        'default_color',
-    ];
+    /** @var string $table */
+    protected $table = 'brand_category';
 
     /** @var string $keyType */
     protected $keyType = 'string';
+
+    /** @var string[] $fillable */
+    protected $fillable = ['merchant_id', 'brand_id', 'category_id'];
 
     /**
      * @return BelongsTo
@@ -30,5 +30,21 @@ class MerchantSetting extends Model implements Auditable
     public function merchant(): BelongsTo
     {
         return $this->belongsTo(Merchant::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 }
